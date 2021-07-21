@@ -1,0 +1,38 @@
+<div *ngIf="!id" class="center-container">
+    <button class="btn-mktg btn-primary-mktg btn-lg-mktg mr-2" type="button" (click)="createGame()">Create a Gameshow</button>
+</div>
+<div *ngIf="id">
+    <div class="sidebar">
+        <h1>Scores</h1>
+        <div *ngFor="let recipient of currentGame.players | keyvalue">
+            {{recipient.key}} : {{recipient.value}}
+            <button class="btn btn-sm btn-danger mr-2" type="button" (click)="addPoints(recipient.key, -1)">-</button>
+            <button class="btn btn-sm btn-outline mr-2" type="button"  (click)="addPoints(recipient.key, 1)">+</button>
+        </div>
+    </div>
+    <div class="content">
+        <div class="center-container">
+            
+            <form [formGroup]="questionForm">
+                <input class="form-control input-lg formmargin" formControlName="image" type="text" placeholder="Image DND" aria-label="Image DND" appDnd (fileDropped)="onFileDropped($event)" />
+                <input class="form-control input-lg formmargin" formControlName="question" type="text" placeholder="Question..." aria-label="Question..." />
+                <button class="btn btn-primary formmargin" type="button" (click)="changeQuestion()">Submit</button>
+            </form>
+            <button *ngIf="currentGame.buzz" class="btn btn-outline formmargin" type="button" (click)="rightBuzzer()">{{currentGame.buzzing}} buzzed! : Right Answer</button>
+            <button *ngIf="currentGame.buzz" class="btn btn formmargin" type="button" (click)="clearBuzzer()">{{currentGame.buzzing}} buzzed! : Clear Buzzer</button>
+            <button *ngIf="currentGame.buzz" class="btn btn-danger formmargin" type="button" (click)="falseBuzzer()">{{currentGame.buzzing}} buzzed! : False Answer</button>
+            <div *ngIf="hasActiveQuestionMessage() || hasActiveQuestionImage()" class="blankslate" appDnd>
+                <p *ngIf="hasActiveQuestionMessage()">Active Question: {{currentGame.question.message}}</p>
+                <img *ngIf="hasActiveQuestionImage()" [src]="getImage()">
+            </div>
+        </div>
+    </div>
+    <div class="rightbar">
+        <h1>Settings</h1>
+        <form [formGroup]="settingsForm">
+            <input class="form-control input" formControlName="pointsForValid" type="number" placeholder="p for valid answer" aria-label="p for valid answer" />
+            <input class="form-control input" formControlName="pointsForEOneOnInvalid" type="number" placeholder="p for invalid answer" aria-label="p for invalid answer" />
+        </form>
+    </div>
+</div>
+<p class="footer">Let ur players join using gameshow.flayinahook.de/join/{{currentGame.gameID}}</p>

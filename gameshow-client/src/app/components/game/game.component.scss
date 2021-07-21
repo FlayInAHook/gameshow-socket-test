@@ -1,0 +1,54 @@
+.center-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    text-align: center;
+}
+
+
+
+.sidebar {
+    height: 100%;
+    width: 160px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    //background-color: #111;
+    overflow-x: hidden;
+    padding-top: 20px;
+    text-align: center;
+}
+
+.sidebar p {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+
+.sidebar h1 {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+img {
+    object-fit: contain;
+    width: 400px;
+    height: 400px;
+}
+  
+
+@media screen and (max-height: 450px) {
+    .sidebar {padding-top: 15px;}
+}
+
+.content {
+    margin-left: 160px; /* Same as the width of the sidenav */
+    font-size: 28px; /* Increased text to enable scrolling */
+    padding: 0px 10px;
+}

@@ -1,0 +1,29 @@
+<div *ngIf="currentGame.gameID == ''" class="center-container">
+    <form [formGroup]="joinForm">
+        <input class="form-control input-lg formmargin" formControlName="playerName" type="text" placeholder="Enter youre Name" aria-label="Enter youre Name" />
+        <button class="btn btn-primary formmargin"  type="button" (click)="joinGame()">Join the Game</button>
+    </form>
+</div>
+<div *ngIf="currentGame.gameID != ''">
+    <div class="sidebar">
+        <h1 class="mb-1">Scores</h1>
+        <p *ngFor="let recipient of currentGame.players | keyvalue">
+            {{recipient.key}} : {{recipient.value}}
+        </p>
+    </div>
+    <div class="content">
+        <div class="center-container">
+            <div *ngIf="hasActiveQuestionMessage() || hasActiveQuestionImage()" class="blankslate">
+                <img *ngIf="hasActiveQuestionImage()" [src]="getImage()">
+                <h3 *ngIf="hasActiveQuestionMessage()" class="mb-1">{{currentGame.question.message}}</h3>
+            </div>
+            <div *ngIf="!currentGame.buzz">
+                <button  class="btn btn-large btn-outline formmargin" (click)="buzz()" type="button">Buzz</button>
+            </div>
+            <div *ngIf="currentGame.buzz">
+                <button *ngIf="currentGame.buzzing == playerName" class="btn btn-large btn-primary formmargin" (click)="buzz()" type="button"> You Buzzed</button>
+                <button *ngIf="currentGame.buzzing !== playerName" class="btn btn-large btn-danger formmargin" (click)="buzz()" type="button">{{currentGame.buzzing}} buzzed</button>
+            </div>
+        </div>
+    </div>
+</div>
