@@ -1,3 +1,4 @@
+import { KeyValue } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -26,6 +27,10 @@ export class GameComponent implements OnInit {
   joinForm = this.formBuilder.group({
     playerName: ''
   });
+
+  valueAscOrder = (a: KeyValue<string,number>, b: KeyValue<string,number>): number => {
+    return a.value > b.value ? -1 : (b.value > a.value ? 1 : 0);
+  }
 
   playerName : string = "";
 

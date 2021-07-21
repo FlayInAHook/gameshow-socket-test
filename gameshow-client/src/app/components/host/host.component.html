@@ -1,7 +1,7 @@
 <div *ngIf="!id" class="center-container">
     <button class="btn-mktg btn-primary-mktg btn-lg-mktg mr-2" type="button" (click)="createGame()">Create a Gameshow</button>
 </div>
-<div *ngIf="id">
+<div *ngIf="id && !currentGame.end">
     <div class="sidebar">
         <h1>Scores</h1>
         <div *ngFor="let recipient of currentGame.players | keyvalue">
@@ -33,6 +33,26 @@
             <input class="form-control input" formControlName="pointsForValid" type="number" placeholder="p for valid answer" aria-label="p for valid answer" />
             <input class="form-control input" formControlName="pointsForEOneOnInvalid" type="number" placeholder="p for invalid answer" aria-label="p for invalid answer" />
         </form>
+        <button class="btn btn-outline" type="button" (click)="playSad()">Play Sad</button>
+        <button class="btn btn-danger" type="button" (click)="endGame()">End Game</button>
     </div>
+    <p class="footer">Let ur players join using gameshow.flayinahook.de/join/{{currentGame.gameID}}</p>
 </div>
-<p class="footer">Let ur players join using gameshow.flayinahook.de/join/{{currentGame.gameID}}</p>
+<div class="leaderboard-container" *ngIf="currentGame.end">
+    <div class="leaderboard">
+        <div class="head">
+            <i class="fas fa-crown"></i>
+            <h1>Ranking</h1>
+        </div>
+        <div class="body">
+            <ol>
+                <li *ngFor="let recipient of currentGame.players | keyvalue: valueAscOrder">
+                    <mark>{{recipient.key}}</mark>
+                    <small>{{recipient.value}}</small>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <button class="btn btn-primary formmargin" type="button" (click)="reopenGame()">Reopen Game</button>
+</div>
+

@@ -30,6 +30,9 @@ export class GameService {
         case "wrong":
           audio.playWrong();
           break;
+        case "join":
+          audio.playJoin();
+          break;
         default:
           break;
       }
@@ -43,8 +46,8 @@ export class GameService {
     console.log(this.socket.emit("addGame", {'host': host, 'game': game}));
   }
 
-  playSound(event: any){
-    this.socket.emit("playAudioServer", event);
+  playSound(host: string, type: string){
+    this.socket.emit("playAudioServer", {"host": host, "type": type});
   }
 
   join(gameID: string, playerName: string) {
@@ -74,6 +77,10 @@ export class GameService {
 
   endGame(host: string) {
     this.socket.emit('endGame', {'host': host});
+  }
+
+  reopenGame(host: string) {
+    this.socket.emit('reopenGame', {'host': host});
   }
 
   close(host: string) {

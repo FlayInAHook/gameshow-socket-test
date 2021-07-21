@@ -4,6 +4,7 @@ export class Game {
     question: Question = new Question();
     buzz: boolean = false;
     buzzing: string = "";
+    end: boolean = false;
 }
 
 export class Question {

@@ -1,3 +1,4 @@
+import { KeyValue } from '@angular/common';
 import { stringify } from '@angular/compiler/src/util';
 import { Component, OnInit, AfterViewInit} from '@angular/core';
 import { FormBuilder } from '@angular/forms';
@@ -29,6 +30,10 @@ export class HostComponent implements OnInit {
     pointsForValid: '',
     pointsForEOneOnInvalid : ''
   });
+
+  valueAscOrder = (a: KeyValue<string,number>, b: KeyValue<string,number>): number => {
+    return a.value > b.value ? -1 : (b.value > a.value ? 1 : 0);
+  }
 
   constructor(private activatedRoute: ActivatedRoute, private gameService: GameService, 
               private router: Router, private formBuilder: FormBuilder, private sanitizer: DomSanitizer) { 
@@ -78,13 +83,13 @@ export class HostComponent implements OnInit {
       this.gameService.addPoint(this.getHost(), player, parseInt(this.settingsForm.value.pointsForEOneOnInvalid))
     }
     this.gameService.clearBuzzer(this.getHost());
-    this.gameService.playSound({"type": "wrong", "gameID": this.currentGame.gameID})
+    this.gameService.playSound(this.getHost(), "wrong")
   }
 
   rightBuzzer(){
     this.gameService.addPoint(this.getHost(), this.currentGame.buzzing, parseInt(this.settingsForm.value.pointsForValid))
     this.gameService.clearBuzzer(this.getHost());
-    this.gameService.playSound({"type": "correct", "gameID": this.currentGame.gameID})
+    this.gameService.playSound(this.getHost(), "correct")
   }
 
   getHost(): string {
@@ -114,6 +119,17 @@ export class HostComponent implements OnInit {
     this.gameService.addPoint(this.getHost(), playerName, points);
   }
 
+  playSad(){
+    this.gameService.playSound(this.getHost(), "sad")
+  }
+
+  endGame(){
+    this.gameService.endGame(this.getHost());
+  }
+
+  reopenGame(){
+    this.gameService.reopenGame(this.getHost());
+  }
 
   onFileDropped(event: any) {
     /*let fileReader = new FileReader();

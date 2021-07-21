@@ -12,6 +12,7 @@ export class AudioService {
     correct : HTMLAudioElement = new Audio("../../../assets/sounds/correct.mp3");
     wrong : HTMLAudioElement = new Audio("../../../assets/sounds/wrong.mp3");
     sad : HTMLAudioElement = new Audio("../../../assets/sounds/sad.mp3");
+    join : HTMLAudioElement = new Audio("../../../assets/sounds/join.mp3");
 
     constructor() {
         this.buzz.volume = 0.5;
@@ -19,6 +20,7 @@ export class AudioService {
         this.correct.load();   
         this.wrong.load();
         this.sad.load();
+        this.join.load();
     }
 
     playBuzz(){
@@ -35,6 +37,10 @@ export class AudioService {
 
     playSad(){
         this.sad.play();
+    }
+
+    playJoin(){
+        this.join.play();
     }
   
   

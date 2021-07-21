@@ -2,7 +2,7 @@ const app = require('express')();
 const http = require('http').Server(app);
 const io = require('socket.io')(http, {
     cors: {
-        origin: "http://localhost:4200",
+        origin: "*",
         methods: ["GET", "POST"]
       }
   });
@@ -30,6 +30,7 @@ io.on("connection", socket => {
         games[event.gameID].players[event.playerName] = 0;
         safeJoin(event.gameID);
         io.in(event.gameID).emit("game", games[event.gameID]);
+        io.in(event.gameID).emit("playAudio", {type: "join"});
     });
 
     socket.on("buzz", event => {
@@ -43,8 +44,8 @@ io.on("connection", socket => {
     });
 
     socket.on("playAudioServer", event => {
-        console.log("got audio");
-        io.in(event.gameID).emit("playAudio", event);
+        if (!Object.keys(hosts).includes(event.host)){ return;}
+        io.in(hosts[event.host]).emit("playAudio", {type: event.type});
     });
 
     socket.on("hostJoin", event => {
@@ -93,6 +94,14 @@ io.on("connection", socket => {
         if (!Object.keys(hosts).includes(event.host)){ return;}
         const gameID = hosts[event.host];
         games[gameID].end = true;
+        
+        io.in(gameID).emit("game", games[gameID]);
+    });
+
+    socket.on("reopenGame", event => {
+        if (!Object.keys(hosts).includes(event.host)){ return;}
+        const gameID = hosts[event.host];
+        games[gameID].end = false;
         
         io.in(gameID).emit("game", games[gameID]);
     });

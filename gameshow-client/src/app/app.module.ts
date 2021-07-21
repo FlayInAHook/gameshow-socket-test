@@ -11,7 +11,7 @@ import { HostComponent } from './components/host/host.component';
 import { DndDirective } from './dnd.directive';
 
 
-const config: SocketIoConfig = { url: 'http://localhost:4444', options: {}, };
+const config: SocketIoConfig = { url: 'https://gameshow.flayinahook.de/', options: {}, };
 
 @NgModule({
   declarations: [

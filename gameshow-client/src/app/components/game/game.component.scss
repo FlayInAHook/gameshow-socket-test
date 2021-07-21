@@ -52,3 +52,71 @@ img {
     font-size: 28px; /* Increased text to enable scrolling */
     padding: 0px 10px;
 }
+
+
+
+
+.leaderboard-container {
+	width: 350px;
+	height: auto;
+	border-radius: 10px;
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 1;
+	overflow: hidden;
+}
+
+/* leaderboard */
+.leaderboard {
+	//background: linear-gradient(to bottom, #3a404d, #181c26);
+}
+
+/* head */
+.leaderboard .head {
+	padding: 20px 16px;
+	font-size: 20px;
+	text-align: center;
+}
+.leaderboard .head h1 {
+	display: inline-block;
+	margin-left: 4px;
+}
+
+/* body */
+.leaderboard .body {
+	font-size: 16px;
+}
+.leaderboard ol {
+	counter-reset: number; /* 定義和初始化計數器 */
+}
+.leaderboard li {
+	padding: 16px;
+	display: flex;
+}
+.leaderboard li mark {
+	flex-grow: 1;
+	background-color: transparent;
+}
+.leaderboard li:before {
+	counter-increment: number; /* 遞增計數器 */
+	content: counter(number) "."; /* 顯示計數器 */
+	margin-right: 4px;
+}
+.leaderboard li:nth-child(1) {
+	background: #388BFD;
+}
+.leaderboard li:nth-child(2) {
+	background: #2d76cf;
+}
+.leaderboard li:nth-child(3) {
+	background: #2a61a2;
+}
+.leaderboard li:nth-child(4) {
+	background: #294d77;
+}
+.leaderboard li:nth-child(5) {
+	background: #27384e;
+}
