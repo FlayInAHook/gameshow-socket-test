@@ -1,3 +1,4 @@
+import { Clipboard } from '@angular/cdk/clipboard';
 import { KeyValue } from '@angular/common';
 import { stringify } from '@angular/compiler/src/util';
 import { Component, OnInit, AfterViewInit} from '@angular/core';
@@ -36,7 +37,8 @@ export class HostComponent implements OnInit {
   }
 
   constructor(private activatedRoute: ActivatedRoute, private gameService: GameService, 
-              private router: Router, private formBuilder: FormBuilder, private sanitizer: DomSanitizer) { 
+              private router: Router, private formBuilder: FormBuilder, private sanitizer: DomSanitizer,
+              private clipboard: Clipboard) { 
     this.games = this.gameService.games;
     this._gameSub = this.gameService.currentGame.subscribe(game => this.currentGame = game);
     this.activatedRoute.params.subscribe(params => {
@@ -59,6 +61,10 @@ export class HostComponent implements OnInit {
     localStorage.setItem("host", host);
     this.gameService.addGame(host);
     this.router.navigate(["/host/" + host])
+  }
+
+  copyLink(){
+    this.clipboard.copy("https://gameshow.flayinahook.de/join/" + this.currentGame.gameID);
   }
 
 

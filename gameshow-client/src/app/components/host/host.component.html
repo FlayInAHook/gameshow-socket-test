@@ -36,7 +36,7 @@
         <button class="btn btn-outline" type="button" (click)="playSad()">Play Sad</button>
         <button class="btn btn-danger" type="button" (click)="endGame()">End Game</button>
     </div>
-    <p class="footer">Let ur players join using gameshow.flayinahook.de/join/{{currentGame.gameID}}</p>
+    <p class="footer" (click)="copyLink()">Let ur players join using gameshow.flayinahook.de/join/{{currentGame.gameID}}</p>
 </div>
 <div class="leaderboard-container" *ngIf="currentGame.end">
     <div class="leaderboard">

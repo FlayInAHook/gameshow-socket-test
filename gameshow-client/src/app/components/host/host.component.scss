@@ -101,6 +101,7 @@ img {
 .leaderboard {
 	//background: linear-gradient(to bottom, #3a404d, #181c26);
     text-align: left;
+    
 }
 
 /* head */
@@ -122,11 +123,13 @@ img {
 	counter-reset: number; /* 定義和初始化計數器 */
 }
 .leaderboard li {
+    color: rgb(4, 11, 36);
 	padding: 16px;
 	display: flex;
 }
 .leaderboard li mark {
 	flex-grow: 1;
+    color: rgb(4, 11, 36);
 	background-color: transparent;
 }
 .leaderboard li:before {

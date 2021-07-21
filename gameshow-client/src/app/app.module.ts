@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { ClipboardModule } from '@angular/cdk/clipboard'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,6 +24,7 @@ const config: SocketIoConfig = { url: 'https://gameshow.flayinahook.de/', option
   ],
   imports: [
     BrowserModule,
+    ClipboardModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
