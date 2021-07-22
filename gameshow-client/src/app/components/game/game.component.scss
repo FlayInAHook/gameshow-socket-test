@@ -66,12 +66,15 @@ img {
 	left: 50%;
 	transform: translate(-50%, -50%);
 	z-index: 1;
+    text-align: center;
 	overflow: hidden;
 }
 
 /* leaderboard */
 .leaderboard {
 	//background: linear-gradient(to bottom, #3a404d, #181c26);
+    text-align: left;
+    
 }
 
 /* head */
@@ -94,10 +97,12 @@ img {
 }
 .leaderboard li {
 	padding: 16px;
+    color: rgb(4, 11, 36);
 	display: flex;
 }
 .leaderboard li mark {
 	flex-grow: 1;
+    color: rgb(4, 11, 36);
 	background-color: transparent;
 }
 .leaderboard li:before {

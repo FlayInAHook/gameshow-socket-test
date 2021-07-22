@@ -15,6 +15,10 @@ function gameExists(gameID){
     return Object.keys(games).includes(gameID);
 }
 
+function gameEnded(gameID){
+    return games[gameID].end;
+}
+
 
 io.on("connection", socket => {
     let previousId;
@@ -35,6 +39,7 @@ io.on("connection", socket => {
 
     socket.on("buzz", event => {
         if (!gameExists(event.gameID)) return;
+        if (gameEnded(event.gameID)) return;
         if (games[event.gameID].buzz == false){
             games[event.gameID].buzz = true;
             games[event.gameID].buzzing = event.playerName; 
