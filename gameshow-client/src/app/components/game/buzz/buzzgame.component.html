@@ -18,12 +18,19 @@
                     <img *ngIf="hasActiveQuestionImage()" [src]="getImage()">
                     <h3 *ngIf="hasActiveQuestionMessage()" class="mb-1">{{currentGame.question.message}}</h3>
                 </div>
-                <div *ngIf="!currentGame.buzz">
-                    <button  class="btn btn-large btn-outline formmargin" (click)="buzz()" type="button">Buzz</button>
+                <div *ngIf="currentGame.question.input">
+                    <form [formGroup]="answerForm">
+                        <input class="form-control input-lg formmargin" type="text" formControlName="answer" placeholder="Answer.." aria-label="Answer.." />
+                    </form>
                 </div>
-                <div *ngIf="currentGame.buzz">
-                    <button *ngIf="currentGame.buzzing == playerName" class="btn btn-large btn-primary formmargin" (click)="buzz()" type="button"> You Buzzed</button>
-                    <button *ngIf="currentGame.buzzing !== playerName" class="btn btn-large btn-danger formmargin" (click)="buzz()" type="button">{{currentGame.buzzing}} buzzed</button>
+                <div *ngIf="!currentGame.question.input">
+                    <div *ngIf="!currentGame.buzz">
+                        <button  class="btn btn-large btn-outline formmargin" (click)="buzz()" type="button">Buzz</button>
+                    </div>
+                    <div *ngIf="currentGame.buzz">
+                        <button *ngIf="currentGame.buzzing == playerName" class="btn btn-large btn-primary formmargin" (click)="buzz()" type="button"> You Buzzed</button>
+                        <button *ngIf="currentGame.buzzing !== playerName" class="btn btn-large btn-danger formmargin" (click)="buzz()" type="button">{{currentGame.buzzing}} buzzed</button>
+                    </div>
                 </div>
             </div>
         </div>

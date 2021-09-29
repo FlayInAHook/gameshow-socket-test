@@ -1,21 +1,50 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { GameComponent } from './components/game/game.component';
-import { HostComponent } from './components/host/host.component';
+import { BuzzGameComponent } from './components/game/buzz/buzzgame.component';
+import { BuzzHostComponent } from './components/host/buzz/buzzhost.component';
+import { SortHostComponent } from './components/host/sort/sorthost.component';
+import { CreateGameComponent } from './create-game/create-game.component';
 
-const routes: Routes = [  
+const routes: Routes = [
     {
-      path: 'join/:id',
-      component: GameComponent
-    }, 
-    {
-      path: 'host/:id',
-      component: HostComponent
+      path: 'create',
+      component: CreateGameComponent
     },
     {
       path: 'host',
-      component: HostComponent
-    }
+      children: [
+        {
+          path: "buzz/:id",
+          component: BuzzHostComponent
+        },
+        {
+          path: "sort/:id",
+          component: SortHostComponent
+        }
+      ]
+    },
+    {
+      path: 'join',
+      children: [
+        {
+          path: "buzz/:id",
+          component: BuzzGameComponent
+        },
+        {
+          path: "sort/:id",
+          component: BuzzGameComponent
+        }
+      ]
+    },
+    {
+      path: 'record',
+      children: [
+        {
+          path: "sort/:id",
+          component: BuzzHostComponent
+        }
+      ]
+    },
   ];
 
 @NgModule({

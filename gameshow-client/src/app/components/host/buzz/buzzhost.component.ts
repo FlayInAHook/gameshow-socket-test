@@ -1,30 +1,36 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { KeyValue } from '@angular/common';
 import { stringify } from '@angular/compiler/src/util';
-import { Component, OnInit, AfterViewInit} from '@angular/core';
+import { Component, OnInit, AfterViewInit, ChangeDetectionStrategy} from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { Game } from 'src/app/models/game.model';
+import { BuzzGame, Game, GameType } from 'src/app/models/game.model';
+import { BuzzGameService } from 'src/app/services/buzz-game.service';
 import { GameService } from 'src/app/services/game.service';
 
 @Component({
-  selector: 'app-host',
-  templateUrl: './host.component.html',
-  styleUrls: ['./host.component.scss']
+  selector: 'app-buzzhost',
+  templateUrl: './buzzhost.component.html',
+  styleUrls: ['./buzzhost.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
-export class HostComponent implements OnInit {
+export class BuzzHostComponent implements OnInit {
   games: Observable<Game[]> | undefined;
-  currentGame: Game = new Game;
+  currentGame: BuzzGame = new BuzzGame();
+  answers: Map<string, string> = new Map<string, string>();
   private _gameSub: Subscription = new Subscription;
-  id : string = "";
+  private _answerSub: Subscription = new Subscription;
+  hostID : string = "";
   
   imageDataString: string = "";
 
   questionForm = this.formBuilder.group({
     question: '',
-    image: ''
+    image: '',
+    input: false
+
   });
 
   settingsForm = this.formBuilder.group({
@@ -36,35 +42,35 @@ export class HostComponent implements OnInit {
     return a.value > b.value ? -1 : (b.value > a.value ? 1 : 0);
   }
 
-  constructor(private activatedRoute: ActivatedRoute, private gameService: GameService, 
+  constructor(private activatedRoute: ActivatedRoute, public gameService: BuzzGameService, 
               private router: Router, private formBuilder: FormBuilder, private sanitizer: DomSanitizer,
               private clipboard: Clipboard) { 
-    this.games = this.gameService.games;
     this._gameSub = this.gameService.currentGame.subscribe(game => this.currentGame = game);
     this.activatedRoute.params.subscribe(params => {
-      this.id = params['id'];
+      this.hostID = params['id'];
     });
+    //this.hostID = route.params['id'];
   }
 
   ngOnInit(): void {}
 
   ngAfterViewInit(){
-    console.log("after init " + this.id);
-    if (this.id.length != undefined){
+    //console.log("after init " + this.id);
+    if (this.hostID.length != undefined){
       console.log("kekw");
-      this.gameService.hostJoin(this.id);
+      this.gameService.hostJoin(this.hostID);
     }
   }
 
   createGame(){
     var host = this.generateHostID();
     localStorage.setItem("host", host);
-    this.gameService.addGame(host);
+    this.gameService.addGame(host, new BuzzGame());
     this.router.navigate(["/host/" + host])
   }
 
   copyLink(){
-    this.clipboard.copy("https://gameshow.flayinahook.de/join/" + this.currentGame.gameID);
+    this.clipboard.copy("https://gameshow.flayinahook.de/join/buzz/" + this.currentGame.gameID);
   }
 
 
@@ -99,12 +105,20 @@ export class HostComponent implements OnInit {
   }
 
   getHost(): string {
-    return localStorage.getItem("host") || "";
+    return this.hostID; //localStorage.getItem("host") || "";
   }
 
-  changeQuestion(){
-    this.gameService.changeQuestion(this.getHost(), this.questionForm.value.question, this.questionForm.value.image);
-    this.questionForm.setValue({"question": "", "image": ""});
+  changeQuestion(inputChange: boolean){
+    if (inputChange){
+      /*console.log("inputChange: " + !this.questionForm.value.input)
+      this.gameService.changeQuestion(this.getHost(), "", "", !this.questionForm.value.input);
+      this.questionForm.setValue({"question": "", "image": "", "input": !this.questionForm.value.input});*/
+    } else {
+      this.gameService.changeQuestion(this.getHost(), this.questionForm.value.question, this.questionForm.value.image, this.questionForm.value.input);
+      this.questionForm.setValue({"question": "", "image": "", "input": this.questionForm.value.input});
+    }
+    
+    console.log(this.currentGame);
   }
 
   hasActiveQuestionMessage(){
@@ -146,9 +160,10 @@ export class HostComponent implements OnInit {
       questionForm.setValue({"image": stringify(fileReader.result)});
     }, false);
     fileReader.readAsDataURL(event[0]);*/
+    console.log("dropped");
     const promise = this.readFile(event[0]);
     promise.then((res) => {
-      this.questionForm.setValue({"image": res, "question": this.questionForm.value.question});
+      this.questionForm.setValue({"image": res, "question": this.questionForm.value.question, "input": this.questionForm.value.input});
     });
     promise.catch((err) => {
       // This is never called

@@ -1,7 +1,7 @@
-<div *ngIf="!id" class="center-container">
+<div *ngIf="!hostID" class="center-container">
     <button class="btn-mktg btn-primary-mktg btn-lg-mktg mr-2" type="button" (click)="createGame()">Create a Gameshow</button>
 </div>
-<div *ngIf="id && !currentGame.end">
+<div *ngIf="hostID && !currentGame.end">
     <div class="sidebar">
         <h1>Scores</h1>
         <div *ngFor="let recipient of currentGame.players | keyvalue">
@@ -16,7 +16,8 @@
             <form [formGroup]="questionForm">
                 <input class="form-control input-lg formmargin" formControlName="image" type="text" placeholder="Image DND" aria-label="Image DND" appDnd (fileDropped)="onFileDropped($event)" />
                 <input class="form-control input-lg formmargin" formControlName="question" type="text" placeholder="Question..." aria-label="Question..." />
-                <button class="btn btn-primary formmargin" type="button" (click)="changeQuestion()">Submit</button>
+                <label> <input class="form-control input-lg formmargin" formControlName="input" type="checkbox" (click)="changeQuestion(true)" /> Input? </label>
+                <button class="btn btn-primary formmargin" type="button" (click)="changeQuestion(false)">Submit</button>
             </form>
             <button *ngIf="currentGame.buzz" class="btn btn-outline formmargin" type="button" (click)="rightBuzzer()">{{currentGame.buzzing}} buzzed! : Right Answer</button>
             <button *ngIf="currentGame.buzz" class="btn btn formmargin" type="button" (click)="clearBuzzer()">{{currentGame.buzzing}} buzzed! : Clear Buzzer</button>
@@ -24,6 +25,11 @@
             <div *ngIf="hasActiveQuestionMessage() || hasActiveQuestionImage()" class="blankslate" appDnd>
                 <p *ngIf="hasActiveQuestionMessage()">Active Question: {{currentGame.question.message}}</p>
                 <img *ngIf="hasActiveQuestionImage()" [src]="getImage()">
+                <div *ngIf="currentGame.question.input">
+                    <p *ngFor="let answer of this.gameService.answers | keyvalue">
+                        {{answer.key}}: {{answer.value}}
+                    </p>
+                </div>
             </div>
         </div>
     </div>

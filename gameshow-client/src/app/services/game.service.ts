@@ -7,14 +7,12 @@ import { AudioService } from './audio.service';
 @Injectable({
   providedIn: 'root'
 })
-export class GameService {
+export abstract class GameService {
 
 
-  currentGame = this.socket.fromEvent<Game>('game');
-  games = this.socket.fromEvent<Game[]>('games');
+  //currentGame = this.socket.fromEvent<Game>('game');
 
-
-  constructor(private socket: Socket, private audio: AudioService) {
+  constructor(public socket: Socket, private audio: AudioService) {
     socket.on("playAudio", (event: any) => {
       console.log("playAudio")
       switch (event.type) {
@@ -39,9 +37,8 @@ export class GameService {
     })
   }
 
-  addGame(host: string) {
+  addGame(host: string, game: Game) {
     console.log("adding");
-    const game = new Game();
     game.gameID = this.gameID();
     console.log(this.socket.emit("addGame", {'host': host, 'game': game}));
   }
@@ -58,18 +55,10 @@ export class GameService {
   hostJoin(host: string) {
     this.socket.emit('hostJoin', {'host': host});
   }
-
-  buzz(playerName: string, gameID : string) {
-    this.socket.emit('buzz', {'playerName': playerName, 'gameID' : gameID});
+  changeQuestion(host: string, question: string, image: string, input: boolean) {
+    this.socket.emit('changeQuestion', {'host': host, 'question': { 'message': question, 'image': image, 'input': input}});
   }
 
-  changeQuestion(host: string, question: string, image: string) {
-    this.socket.emit('changeQuestion', {'host': host, 'question': { 'message': question, 'image': image}});
-  }
-
-  clearBuzzer(host: string) {
-    this.socket.emit('clearBuzzer', {'host': host});
-  }
   
   addPoint(host: string, playerName: string, points: number) {
     this.socket.emit('addPoint', {'host': host, 'playerName': playerName, "points": points});
@@ -86,7 +75,6 @@ export class GameService {
   close(host: string) {
     this.socket.emit('close', {'host': host});
   }
-
 
   private gameID() {
     let text = '';

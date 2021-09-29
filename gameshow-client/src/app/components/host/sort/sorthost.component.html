@@ -1,0 +1,93 @@
+<div class="parent">
+    <div id="current" class="flex-justify-center">
+        <div> 
+            <h2>Lösung</h2>
+            <div
+            cdkDropList
+            #todoList="cdkDropList"
+            [cdkDropListData]="todo"
+            [cdkDropListConnectedTo]="[doneList]"
+            class="example-list"
+            (cdkDropListDropped)="drop($event)">
+                <div class="example-box" *ngFor="let item of todo" cdkDrag>
+                    <div class="Box">
+                        <ul>
+                            <li class="Box-row">
+                                {{item}}
+                                </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="options" class="flex-justify-center"> 
+        <div> 
+            <div
+            cdkDropList
+            #doneList="cdkDropList"
+            [cdkDropListData]="done"
+            [cdkDropListConnectedTo]="[todoList]"
+            class="example-list"
+            (cdkDropListDropped)="drop($event)">
+                <div class="example-box" *ngFor="let item of currentGame.rounds[currentGame.round].options; let i = index" cdkDrag>
+                    <div class="Box">
+                        <ul>
+                            <li class="Box-row">
+                                {{item}}
+                                <div class="list-buttons">
+                                    <button class="btn-octicon" type="button" aria-label="Pencil icon" click="edit">
+                                    <!-- <%= octicon "pencil" %> -->
+                                    <svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path fill-rule="evenodd" d="M11.013 1.427a1.75 1.75 0 012.474 0l1.086 1.086a1.75 1.75 0 010 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 01-.927-.928l.929-3.25a1.75 1.75 0 01.445-.758l8.61-8.61zm1.414 1.06a.25.25 0 00-.354 0L10.811 3.75l1.439 1.44 1.263-1.263a.25.25 0 000-.354l-1.086-1.086zM11.189 6.25L9.75 4.81l-6.286 6.287a.25.25 0 00-.064.108l-.558 1.953 1.953-.558a.249.249 0 00.108-.064l6.286-6.286z"></path></svg>
+                                  </button>
+                                  
+                                  <button class="btn-octicon btn-octicon-danger" type="button" aria-label="Trashcan icon">
+                                    <!-- <%= octicon "trashcan" %> -->
+                                    <svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path fill-rule="evenodd" d="M6.5 1.75a.25.25 0 01.25-.25h2.5a.25.25 0 01.25.25V3h-3V1.75zm4.5 0V3h2.25a.75.75 0 010 1.5H2.75a.75.75 0 010-1.5H5V1.75C5 .784 5.784 0 6.75 0h2.5C10.216 0 11 .784 11 1.75zM4.496 6.675a.75.75 0 10-1.492.15l.66 6.6A1.75 1.75 0 005.405 15h5.19c.9 0 1.652-.681 1.741-1.576l.66-6.6a.75.75 0 00-1.492-.149l-.66 6.6a.25.25 0 01-.249.225h-5.19a.25.25 0 01-.249-.225l-.66-6.6z"></path></svg>
+                                  </button>
+                                </div>
+                                
+                              </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="solution" class="flex-justify-center"> 
+        <div class="example-list">
+            <div class="example-box" *ngFor="let item of rounds[round]; let i = index">
+                <div class="Box">
+                    <ul>
+                        <li class="Box-row">
+                            <editable class="width-full" (update)="updateField(i)">
+                                <ng-template viewMode>{{item}}</ng-template>
+                                <ng-template editMode>
+                                    <input [formControl]="getControl(i)">
+                                    <div class="list-buttons">
+                                        <button class="btn-octicon btn-octicon-danger" type="button" aria-label="Trashcan icon">
+                                        <!-- <%= octicon "trashcan" %> -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 01-1.484.211c-.04-.282-.163-.547-.37-.847a8.695 8.695 0 00-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.75.75 0 01-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75zM6 15.25a.75.75 0 01.75-.75h2.5a.75.75 0 010 1.5h-2.5a.75.75 0 01-.75-.75zM5.75 12a.75.75 0 000 1.5h4.5a.75.75 0 000-1.5h-4.5z"/></svg>
+                                        </button>
+                                    </div>
+                                </ng-template>
+                            </editable>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="notes">
+        <form class="m-2">
+            <div class="form-group">
+                <div class="form-group-header">
+                  <label for="example-textarea">Notizen</label>
+                </div>
+                <div class="form-group-body">
+                  <textarea class="form-control" id="example-textarea"></textarea>
+                </div>
+              </div>
+        </form>
+    </div>
+</div> 

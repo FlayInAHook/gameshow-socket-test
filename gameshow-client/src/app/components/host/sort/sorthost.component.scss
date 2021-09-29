@@ -1,0 +1,31 @@
+.parent {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}
+    
+#current { grid-area: 1 / 1 / 6 / 2; display: flex;}
+#options { grid-area: 1 / 2 / 6 / 3; display: flex;}
+#solution { grid-area: 1 / 3 / 6 / 4; display: flex;}
+#notes { grid-area: 1 / 4 / 6 / 6;} 
+
+.list-buttons{
+    position: relative;
+    float: right;
+}
+
+.form-group-header{
+    text-align: center;
+}
+
+.center-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    text-align: center;
+}

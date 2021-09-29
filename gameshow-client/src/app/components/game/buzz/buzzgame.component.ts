@@ -4,8 +4,9 @@ import { FormBuilder } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { Game, Question } from 'src/app/models/game.model';
+import { BuzzGame, Game } from 'src/app/models/game.model';
 import { AudioService } from 'src/app/services/audio.service';
+import { BuzzGameService } from 'src/app/services/buzz-game.service';
 import { GameService } from 'src/app/services/game.service';
 
 export enum KEY_CODE {
@@ -14,18 +15,21 @@ export enum KEY_CODE {
 }
 
 @Component({
-  selector: 'app-game',
-  templateUrl: './game.component.html',
-  styleUrls: ['./game.component.scss']
+  selector: 'app-buzzgame',
+  templateUrl: './buzzgame.component.html',
+  styleUrls: ['./buzzgame.component.scss']
 })
-export class GameComponent implements OnInit {
+export class BuzzGameComponent implements OnInit {
 
   games: Observable<Game[]> | undefined;
-  currentGame: Game = new Game;
+  currentGame: BuzzGame = new BuzzGame();
   private _gameSub: Subscription = new Subscription;
   id : string = "";
   joinForm = this.formBuilder.group({
     playerName: ''
+  });
+  answerForm = this.formBuilder.group({
+    answer: ''
   });
 
   valueAscOrder = (a: KeyValue<string,number>, b: KeyValue<string,number>): number => {
@@ -34,9 +38,8 @@ export class GameComponent implements OnInit {
 
   playerName : string = "";
 
-  constructor(private activatedRoute: ActivatedRoute, private gameService: GameService, 
+  constructor(private activatedRoute: ActivatedRoute, private gameService: BuzzGameService, 
               private router: Router, private formBuilder: FormBuilder, private sanitizer: DomSanitizer) { 
-    this.games = this.gameService.games;
     this._gameSub = this.gameService.currentGame.subscribe(game => this.currentGame = game);
     this.activatedRoute.params.subscribe(params => {
       this.id = params['id'];
@@ -44,7 +47,12 @@ export class GameComponent implements OnInit {
     });
   } 
   ngOnInit(): void {
-    
+    this.answerForm.get("answer")?.valueChanges.subscribe(selectedValue => {
+      setTimeout(() => {
+        this.typingAnswer() //shows the latest first name
+      })
+         
+    })
   }
 
   @HostListener('window:keyup', ['$event'])
@@ -67,6 +75,11 @@ export class GameComponent implements OnInit {
   buzz(){
     this.gameService.buzz(this.playerName, this.currentGame.gameID);
     this.logGame();
+  }
+
+  typingAnswer(){
+    console.log("typing...");
+    this.gameService.typingAnswer(this.playerName, this.answerForm.value.answer, this.currentGame.gameID);
   }
 
   hasActiveQuestionMessage(){
